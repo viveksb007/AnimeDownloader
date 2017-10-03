@@ -45,6 +45,7 @@ public class NavigationActivity extends AppCompatActivity {
     private TextView txtName;
     private Toolbar toolbar;
     private boolean hasWritePermission;
+    private Menu menu;
 
     public static int navItemIndex = 0;
 
@@ -120,6 +121,10 @@ public class NavigationActivity extends AppCompatActivity {
     }
 
     private Fragment getHomeFragment() {
+        if (navItemIndex != 0) {
+            MenuItem item = menu.findItem(R.id.menu_bookmark);
+            item.setVisible(false);
+        }
         switch (navItemIndex) {
             case 0:
                 homeFragment = HomeFragment.newInstance(this);
@@ -221,6 +226,7 @@ public class NavigationActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
     }
@@ -244,6 +250,9 @@ public class NavigationActivity extends AppCompatActivity {
                 break;
             case R.id.menu_how_to:
                 showHowToDialog();
+                break;
+            case R.id.menu_bookmark:
+                // save current link
                 break;
         }
         return super.onOptionsItemSelected(item);
