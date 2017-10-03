@@ -4,31 +4,35 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home_black_24dp"
-            android:title="Home" />
+            android:title="@string/nav_home" />
         <item
             android:id="@+id/nav_bookmark"
             android:icon="@drawable/ic_bookmark_black_24dp"
-            android:title="Bookmarks" />
+            android:title="@string/nav_bookmark" />
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_history_black_24dp"
-            android:title="History" />
+            android:title="@string/nav_history" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black_24dp"
-            android:title="Settings" />
+            android:title="@string/nav_settings" />
     </group>
 
-    <item android:title="Other">
+    <item android:title="@string/other">
         <menu>
             <item
                 android:id="@+id/nav_help_feedback"
                 android:icon="@drawable/ic_feedback_black_24dp"
-                android:title="Help and Feedback" />
+                android:title="@string/nav_help_feedback" />
+            <item
+                android:id="@+id/nav_share_app"
+                android:icon="@drawable/ic_share_black_24dp"
+                android:title="@string/share_app" />
             <item
                 android:id="@+id/nav_rate_app"
                 android:icon="@drawable/ic_rate_review_black_24dp"
-                android:title="Rate App" />
+                android:title="@string/rate_app" />
         </menu>
     </item>
 </menu>

@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.appodeal.ads.Appodeal;
+import com.appodeal.ads.InterstitialCallbacks;
 import com.browser.viveksb007.animedownloader.MyWebView;
 import com.browser.viveksb007.animedownloader.R;
 import com.browser.viveksb007.animedownloader.WebViewInterface;
@@ -33,12 +34,15 @@ import java.io.InputStreamReader;
 public class HomeFragment extends Fragment {
 
     private static final String URL = "http://kissanime.ru/";
+    private static final String TEST_URL = "https://www.google.com";
     private static final String TEST_BETA_URL = "http://kissanime.ru/Anime/Naruto-Shippuuden-Dub/Episode-370?id=133775&s=beta";
     private static final String TEST_RAPID_URL = "http://kissanime.ru/Anime/Naruto-Shippuuden-Dub/Episode-370?id=133775&s=default";
     private WebView webView;
     private WebViewInterface webViewInterface;
     private String jsToInject;
     private String link = "";
+    private Bundle webViewBundle;
+    private MyWebView myWebView;
 
     public static HomeFragment newInstance(Context context) {
         return new HomeFragment();
@@ -47,6 +51,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        webViewBundle = new Bundle();
+        myWebView = new MyWebView(getActivity(), URL);
     }
 
     @Nullable
@@ -54,18 +60,20 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         LinearLayout ll = view.findViewById(R.id.holder);
-        MyWebView myWebView = new MyWebView(getActivity(), URL);
         webView = myWebView.getWebView();
         webViewInterface = myWebView.getWebViewInterface();
         ll.addView(webView);
         jsToInject = readJSFromAssets("jsAndroid.js");
+        if (webViewBundle != null && !webViewBundle.isEmpty()) {
+            webView.restoreState(webViewBundle);
+            webViewBundle.clear();
+        }
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         Appodeal.initialize(getActivity(), getString(R.string.app_key), Appodeal.INTERSTITIAL | Appodeal.BANNER);
-
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -137,17 +145,27 @@ public class HomeFragment extends Fragment {
         downloadRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
         downloadRequest.setDestinationUri(Uri.fromFile(destinationFile));
         downloadManager.enqueue(downloadRequest);
+        showOneInterstitialAd();
+    }
+
+    private void showOneInterstitialAd() {
+        Appodeal.show(getActivity(), Appodeal.INTERSTITIAL);
     }
 
     @Override
     public void onPause() {
         webView.onPause();
+        if (webView != null && webViewBundle.isEmpty()) {
+            webView.saveState(webViewBundle);
+        }
         super.onPause();
     }
 
     @Override
     public void onResume() {
         webView.onResume();
+        Appodeal.onResume(getActivity(), Appodeal.BANNER);
+        Appodeal.show(getActivity(), Appodeal.BANNER_BOTTOM);
         super.onResume();
     }
 }

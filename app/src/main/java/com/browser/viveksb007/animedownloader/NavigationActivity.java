@@ -1,13 +1,17 @@
 package com.browser.viveksb007.animedownloader;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,12 +36,15 @@ import com.browser.viveksb007.animedownloader.fragments.SettingsFragment;
 
 public class NavigationActivity extends AppCompatActivity {
 
+    private static final int WRITE_EXTERNAL_STORAGE_REQUEST = 1;
+
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private View navHeader;
     private ImageView imgProfile;
     private TextView txtName;
     private Toolbar toolbar;
+    private boolean hasWritePermission;
 
     public static int navItemIndex = 0;
 
@@ -58,17 +65,17 @@ public class NavigationActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mHandler = new Handler();
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
 
         navHeader = navigationView.getHeaderView(0);
-        txtName = (TextView) navHeader.findViewById(R.id.name);
-        imgProfile = (ImageView) navHeader.findViewById(R.id.img_profile);
+        txtName = navHeader.findViewById(R.id.name);
+        imgProfile = navHeader.findViewById(R.id.img_profile);
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
         loadNavHeader();
 
@@ -80,6 +87,11 @@ public class NavigationActivity extends AppCompatActivity {
             loadHomeFragment();
         }
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_REQUEST);
+        } else {
+            hasWritePermission = true;
+        }
     }
 
     private void loadHomeFragment() {
@@ -239,11 +251,23 @@ public class NavigationActivity extends AppCompatActivity {
 
     private void showHowToDialog() {
         MaterialDialog dialog = new MaterialDialog.Builder(this)
-                .title("How To Guide")
+                .title("How To Stream/Download Anime")
                 .customView(R.layout.how_to_guide, true)
                 .positiveText("Got it")
                 .build();
         dialog.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == WRITE_EXTERNAL_STORAGE_REQUEST) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                hasWritePermission = true;
+            } else {
+                hasWritePermission = false;
+                Toast.makeText(this, "Can't Download Anime", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 }
