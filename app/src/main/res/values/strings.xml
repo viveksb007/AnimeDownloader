@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">Anime Downloader</string>
+
+    <string name="test_ad_banner_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="app_key">5f865b6b556071ec56761271b7e09a91e13839bb06c8894f</string>
+    <string name="download_video">Download Video</string>
+    <string name="stream_video">Stream Video</string>
+    <string name="how_to">How To Guide</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_bookmark">Bookmarks</string>
+    <string name="nav_history">History</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_rate_app">Rate App</string>
+    <string name="nav_help_feedback">Help &amp; Feedback</string>
+    <string name="nav_about_us">About Us</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="openDrawer">open_drawer</string>
+    <string name="closeDrawer">close_drawer</string>
+
+
+    <string-array name="nav_item_activity_titles">
+        <item>Home</item>
+        <item>Bookmark</item>
+        <item>History</item>
+        <item>Settings</item>
+    </string-array>
+
+
 </resources>

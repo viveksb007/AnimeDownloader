@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AnimeDownloader.iml" filepath="$PROJECT_DIR$/AnimeDownloader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/adcolony-sdk-3.1.2/adcolony-sdk-3.1.2.iml" filepath="$PROJECT_DIR$/adcolony-sdk-3.1.2/adcolony-sdk-3.1.2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

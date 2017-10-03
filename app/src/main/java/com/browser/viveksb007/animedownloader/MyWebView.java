@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -13,14 +15,23 @@ import android.webkit.WebSettings.PluginState;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class MyWebView {
 
     private WebView webView;
     private WebSettings webSettings;
+    private WebViewInterface webViewInterface;
     private static int API = android.os.Build.VERSION.SDK_INT;
+    public boolean pageLoaded = false;
+    public boolean pageLoadStarted = false;
+    private Context context;
 
     @SuppressWarnings("deprecation")
     public MyWebView(Activity activity, String url) {
+        this.context = activity;
         webView = new WebView(activity);
         webView.setDrawingCacheBackgroundColor(0x00000000);
         webView.setFocusableInTouchMode(true);
@@ -40,6 +51,11 @@ public class MyWebView {
         webView.setSaveEnabled(true);
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new MyWebClient());
+
+        // jsInterface
+        webViewInterface = new WebViewInterface();
+        webView.addJavascriptInterface(webViewInterface, "Android");
+
         webSettings = webView.getSettings();
         initializeSettings(webView.getSettings(), activity);
         initializePreferences();
@@ -102,6 +118,10 @@ public class MyWebView {
         return webView;
     }
 
+    public WebViewInterface getWebViewInterface() {
+        return webViewInterface;
+    }
+
     public class MyWebClient extends WebViewClient {
 
         MyWebClient() {
@@ -109,12 +129,14 @@ public class MyWebView {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            //
+            Log.v("URL LOADED", url);
+            pageLoaded = true;
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            //
+            pageLoadStarted = true;
+            pageLoaded = false;
         }
 
         @Override
