@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -18,6 +20,8 @@ import android.webkit.WebViewClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.PublicKey;
+import java.util.ArrayList;
 
 public class MyWebView {
 
@@ -27,11 +31,14 @@ public class MyWebView {
     private static int API = android.os.Build.VERSION.SDK_INT;
     public boolean pageLoaded = false;
     public boolean pageLoadStarted = false;
+    public String currentUrl = "";
+    private ArrayList<String> urlLoaded;
     private Context context;
 
     @SuppressWarnings("deprecation")
-    public MyWebView(Activity activity, String url) {
+    public MyWebView(Activity activity, String url, ArrayList<String> urlLoaded) {
         this.context = activity;
+        this.urlLoaded = urlLoaded;
         webView = new WebView(activity);
         webView.setDrawingCacheBackgroundColor(0x00000000);
         webView.setFocusableInTouchMode(true);
@@ -96,6 +103,11 @@ public class MyWebView {
         if (API < 19) {
             settings.setDatabasePath(context.getCacheDir() + "/databases");
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        } else {
+            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
         settings.setDomStorageEnabled(true);
         settings.setAppCacheEnabled(true);
         settings.setAppCachePath(context.getCacheDir().toString());
@@ -129,12 +141,13 @@ public class MyWebView {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            Log.v("URL LOADED", url);
             pageLoaded = true;
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            currentUrl = url;
+            urlLoaded.add(url);
             pageLoadStarted = true;
             pageLoaded = false;
         }

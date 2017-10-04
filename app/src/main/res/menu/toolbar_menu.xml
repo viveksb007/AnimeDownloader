@@ -3,17 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_bookmark"
-        android:icon="@drawable/ic_star_border_black_24dp"
-        app:showAsAction="always"
-        android:title="Bookmark" />
+        android:id="@+id/menu_how_to"
+        android:icon="@drawable/ic_speaker_notes_black_24dp"
+        android:title="@string/how_to"
+        app:showAsAction="always" />
     <item
         android:id="@+id/menu_download"
-        android:title="@string/download_video" />
+        android:icon="@drawable/ic_file_download_black_24dp"
+        android:title="@string/download_video"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_stream"
         android:title="@string/stream_video" />
     <item
-        android:id="@+id/menu_how_to"
-        android:title="@string/how_to" />
+        android:id="@+id/menu_share"
+        android:title="@string/share_app" />
+    <item
+        android:id="@+id/menu_rate"
+        android:title="@string/rate_app" />
 </menu>

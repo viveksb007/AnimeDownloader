@@ -5,4 +5,5 @@ package com.browser.viveksb007.animedownloader;
  */
 
 public class PreferenceManager {
+
 }

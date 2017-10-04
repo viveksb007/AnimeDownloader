@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Created by viveksb007 on 3/10/17.
@@ -43,6 +45,7 @@ public class HomeFragment extends Fragment {
     private String link = "";
     private Bundle webViewBundle;
     private MyWebView myWebView;
+    private ArrayList<String> urlLoaded = new ArrayList<>();
 
     public static HomeFragment newInstance(Context context) {
         return new HomeFragment();
@@ -52,7 +55,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         webViewBundle = new Bundle();
-        myWebView = new MyWebView(getActivity(), URL);
+        myWebView = new MyWebView(getActivity(), URL, urlLoaded);
     }
 
     @Nullable
@@ -133,6 +136,15 @@ public class HomeFragment extends Fragment {
         }, 500);
     }
 
+    private String obtainFileName() {
+        String currentURL = myWebView.currentUrl;
+        int initialMarker = currentURL.indexOf("Anime/");
+        int finalMarker = currentURL.indexOf("?");
+        String fileName = currentURL.substring(initialMarker + 6, finalMarker);
+        fileName = fileName.replaceAll("/", "_");
+        return fileName;
+    }
+
     public WebView getWebView() {
         return webView;
     }
@@ -140,7 +152,7 @@ public class HomeFragment extends Fragment {
     private void downloadVideo() {
         DownloadManager downloadManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
         DownloadManager.Request downloadRequest = new DownloadManager.Request(Uri.parse(link));
-        File destinationFile = new File(Environment.getExternalStorageDirectory(), String.valueOf(System.currentTimeMillis() + ".mp4"));
+        File destinationFile = new File(Environment.getExternalStorageDirectory(), obtainFileName() + ".mp4");
         downloadRequest.setDescription("Downloading Anime");
         downloadRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
         downloadRequest.setDestinationUri(Uri.fromFile(destinationFile));
@@ -168,4 +180,9 @@ public class HomeFragment extends Fragment {
         Appodeal.show(getActivity(), Appodeal.BANNER_BOTTOM);
         super.onResume();
     }
+
+    public ArrayList<String> getUrlLoaded() {
+        return urlLoaded;
+    }
+
 }
