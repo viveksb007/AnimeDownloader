@@ -21,4 +21,7 @@
     <item
         android:id="@+id/menu_rate"
         android:title="@string/rate_app" />
+    <item
+        android:id="@+id/menu_credit"
+        android:title="Credits" />
 </menu>

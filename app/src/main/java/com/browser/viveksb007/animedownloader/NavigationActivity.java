@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.browser.viveksb007.animedownloader.fragments.HomeFragment;
 
@@ -40,6 +42,41 @@ public class NavigationActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_bar_main);
+        final PreferenceManager preferenceManager = new PreferenceManager(this);
+        if (preferenceManager.isFirstTime()) {
+            MaterialDialog dialog = new MaterialDialog.Builder(this)
+                    .title("Anime Downloader Disclaimer")
+                    .icon(getResources().getDrawable(R.drawable.ic_info_outline_black_24dp))
+                    .customView(R.layout.disclaimer, true)
+                    .positiveText("Accept")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            preferenceManager.setFirstLaunch(false);
+                            initialise();
+                        }
+                    })
+                    .negativeText("Close")
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            finish();
+                        }
+                    })
+                    .build();
+            View view = dialog.getCustomView();
+            assert view != null;
+            TextView tvDisclaimer = view.findViewById(R.id.tv_disclaimer);
+            if (tvDisclaimer != null) {
+                tvDisclaimer.setMovementMethod(LinkMovementMethod.getInstance());
+            }
+            dialog.show();
+        } else {
+            initialise();
+        }
+    }
+
+    private void initialise() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_REQUEST);
         } else
@@ -83,8 +120,24 @@ public class NavigationActivity extends AppCompatActivity {
             case R.id.menu_how_to:
                 showHowToDialog();
                 break;
+            case R.id.menu_credit:
+                showCreditDialog();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showCreditDialog() {
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .title("Credits")
+                .customView(R.layout.credit_dialog, true)
+                .positiveText("Okay")
+                .build();
+        TextView tvCredit = dialog.getCustomView().findViewById(R.id.tv_credit);
+        if (tvCredit != null) {
+            tvCredit.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        dialog.show();
     }
 
     private void showHowToDialog() {
