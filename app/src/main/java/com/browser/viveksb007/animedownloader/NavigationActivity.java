@@ -123,6 +123,9 @@ public class NavigationActivity extends AppCompatActivity {
             case R.id.menu_credit:
                 showCreditDialog();
                 break;
+            case R.id.menu_refresh:
+                homeFragment.getWebView().reload();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
