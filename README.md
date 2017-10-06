@@ -5,6 +5,8 @@ This app allows to download/stream anime from [Kissanime](http://kissanime.ru/).
 - Switch server to **`beta`** server or **`Kissanime`** server whichever is available.
 - **Download** Anime to watch later or **Stream** Anime to your video player like `MxPlayer`, etc.
 
+Download APK : https://github.com/viveksb007/AnimeDownloader/raw/master/app/app-release.apk
+
 <table>
     <tr>
      <td><img src="/sshots/1.png"></td>
