@@ -13,7 +13,7 @@ public class PreferenceManager {
     SharedPreferences.Editor editor;
     Context context;
 
-    private static final String pref_name = "AttendanceClient";
+    private static final String pref_name = "AnimeDownloader";
     private static final String IS_FIRST_LAUNCH = "IS_FIRST_LAUNCH";
 
     public PreferenceManager(Context context) {
