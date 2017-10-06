@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_download"
+        android:icon="@drawable/ic_file_download_black_24dp"
+        android:title="@string/download_video"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_refresh"
+        android:icon="@drawable/ic_refresh_black_24dp"
+        android:title="@string/reload"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_stream"
+        android:title="@string/stream_video" />
+    <item
+        android:id="@+id/menu_how_to"
+        android:icon="@drawable/ic_speaker_notes_black_24dp"
+        android:title="@string/how_to"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_share"
+        android:title="@string/share_app" />
+    <item
+        android:id="@+id/menu_rate"
+        android:title="@string/rate_app" />
+    <item
+        android:id="@+id/menu_credit"
+        android:title="Credits" />
+</menu>
