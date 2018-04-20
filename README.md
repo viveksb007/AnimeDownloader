@@ -7,6 +7,8 @@ This app allows to download/stream anime from [Kissanime](http://kissanime.ru/).
 
 Download APK : https://github.com/viveksb007/AnimeDownloader/raw/master/app/app-release.apk
 
+## [Click here for Video Demo of App](https://www.youtube.com/watch?v=rJ30AWGLyRw)
+
 <table>
     <tr>
      <td><img src="/sshots/1.png"></td>
